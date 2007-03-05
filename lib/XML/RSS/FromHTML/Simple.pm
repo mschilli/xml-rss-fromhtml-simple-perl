@@ -235,7 +235,7 @@ their textual descriptions into an RSS file.
 =head1 DESCRIPTION
 
 C<XML::RSS::FromHTML::Simple> helps reeling in web pages and 
-creating RSS files out of them.
+creating RSS files from them.
 Typically, it is used to contact websites that are displaying news 
 content in HTML, but aren't providing RSS files of their own.
 RSS files are typically used to track the content on frequently 
@@ -278,7 +278,7 @@ object and set its properties afterwards:
 
 Typically, not all links embedded in the HTML document should be
 copied to the resulting RSS file. The C<link_filter()> attribute
-takes a subroutine reference, which decides on each URL whether to 
+takes a subroutine reference, which decides for each URL whether to 
 process it or ignore it:
 
     $f->link_filter( sub {
@@ -309,7 +309,7 @@ which will generate the RSS file. If anything goes wrong, C<make_rss()>
 returns false and the C<error()> method will tell why it failed.
 
 This module has been inspired by Sean Burke's article in TPJ 11/2002.
-I've discussed its code in the following 02/2005 issue of Linux Magazine:
+I've discussed its code in the 02/2005 issue of Linux Magazine:
 
     http://www.linux-magazine.com/issue/51/Perl_Collecting_News_Headlines.pdf
 
