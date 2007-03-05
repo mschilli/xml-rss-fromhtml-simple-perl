@@ -206,12 +206,12 @@ XML::RSS::FromHTML::Simple - Create RSS feeds for sites that don't offer them
 
     use XML::RSS::FromHTML::Simple;
 
-    my $proc = XML::RSS::FromHTML::Simple->new(
-        url    => "http://perlmeister.com/art_eng.html",
-        output => "new_articles.xml",
-    );
+    my $proc = XML::RSS::FromHTML::Simple->new({
+        url      => "http://perlmeister.com/art_eng.html",
+        rss_file => "new_articles.xml",
+    });
 
-    $prod->link_filter( sub {
+    $proc->link_filter( sub {
         my($link, $text) = @_;
 
             # Only extract links that contain 'linux-magazine'
@@ -221,10 +221,10 @@ XML::RSS::FromHTML::Simple - Create RSS feeds for sites that don't offer them
         } else {
             return 0;
         }
-    };
+    });
 
         # Create RSS file
-    $proc->run();
+    $proc->make_rss() or die $proc->error();
 
 =head1 ABSTRACT
 
