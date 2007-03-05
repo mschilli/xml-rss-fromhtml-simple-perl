@@ -13,7 +13,7 @@
 #     ABSTRACT_FROM => q[lib/XML/RSS/FromHTML/Simple.pm]
 #     AUTHOR => q[Mike <m@perlmeister.com>]
 #     NAME => q[XML::RSS::FromHTML::Simple]
-#     PREREQ_PM => { DateTime=>q[0], XML::RSS=>q[0], XML::Simple=>q[0], Class::Accessor=>q[0], HTML::TreeBuilder=>q[0], HTTP::Date=>q[0], HTTP::Request::Common=>q[0], LWP::UserAgent=>q[0], HTML::Entities=>q[0], URI::URL=>q[0], Log::Log4perl=>q[0] }
+#     PREREQ_PM => { DateTime=>q[0], XML::RSS=>q[0], XML::Simple=>q[0], Class::Accessor=>q[0], HTML::TreeBuilder=>q[0], Encode=>q[0], HTTP::Date=>q[0], HTTP::Request::Common=>q[0], LWP::UserAgent=>q[0], HTML::Entities=>q[0], URI::URL=>q[0], Log::Log4perl=>q[0] }
 #     VERSION_FROM => q[lib/XML/RSS/FromHTML/Simple.pm]
 
 # --- MakeMaker post_initialize section:
@@ -472,13 +472,14 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '--- #YAML:1.0' > META_new.yml
 	$(NOECHO) $(ECHO) 'name:                XML-RSS-FromHTML-Simple' >> META_new.yml
 	$(NOECHO) $(ECHO) 'version:             0.01' >> META_new.yml
-	$(NOECHO) $(ECHO) 'abstract:            Turn links on an HTML page into a RSS file' >> META_new.yml
+	$(NOECHO) $(ECHO) 'abstract:            Create RSS feeds for sites that don'\''t offer them' >> META_new.yml
 	$(NOECHO) $(ECHO) 'license:             ~' >> META_new.yml
 	$(NOECHO) $(ECHO) 'generated_by:        ExtUtils::MakeMaker version 6.31' >> META_new.yml
 	$(NOECHO) $(ECHO) 'distribution_type:   module' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:     ' >> META_new.yml
 	$(NOECHO) $(ECHO) '    Class::Accessor:               0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    DateTime:                      0' >> META_new.yml
+	$(NOECHO) $(ECHO) '    Encode:                        0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    HTML::Entities:                0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    HTML::TreeBuilder:             0' >> META_new.yml
 	$(NOECHO) $(ECHO) '    HTTP::Date:                    0' >> META_new.yml
@@ -781,11 +782,12 @@ testdb_static :: testdb_dynamic
 ppd:
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="0,01,0,0">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <TITLE>$(DISTNAME)</TITLE>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT>Turn links on an HTML page into a RSS file</ABSTRACT>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT>Create RSS feeds for sites that don'\''t offer them</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Mike &lt;m@perlmeister.com&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Class-Accessor" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="DateTime" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="Encode" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="HTML-Entities" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="HTML-TreeBuilder" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <DEPENDENCY NAME="HTTP-Date" VERSION="0,0,0,0" />' >> $(DISTNAME).ppd
