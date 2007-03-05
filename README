@@ -1,40 +1,126 @@
-XML-RSS-Maker version 0.01
-==========================
+######################################################################
+    XML::RSS::FromHTML::Simple 0.01
+######################################################################
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+NAME
+    XML::RSS::FromHTML::Simple - Create RSS feeds for sites that don't offer
+    them
 
-A README file is required for CPAN modules since CPAN extracts the
-README file from a module distribution so that people browsing the
-archive can use it get an idea of the modules uses. It is usually a
-good idea to provide version information here so that people can
-decide whether fixes for the module are worth downloading.
+SYNOPSIS
+        use XML::RSS::FromHTML::Simple;
 
-INSTALLATION
+        my $proc = XML::RSS::FromHTML::Simple->new(
+            url    => "http://perlmeister.com/art_eng.html",
+            output => "new_articles.xml",
+        );
 
-To install this module type the following:
+        $prod->link_filter( sub {
+            my($link, $text) = @_;
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+                # Only extract links that contain 'linux-magazine'
+                # in their URL
+            if( $link =~ m#linux-magazine#) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
 
-DEPENDENCIES
+            # Create RSS file
+        $proc->run();
 
-This module requires these other modules and libraries:
+ABSTRACT
+    This module helps creating RSS feeds for sites that don't them. It
+    examines HTML documents, extracts their links and puts them and their
+    textual descriptions into an RSS file.
 
-  blah blah blah
+DESCRIPTION
+    "XML::RSS::FromHTML::Simple" helps reeling in web pages and creating RSS
+    files out of them. Typically, it is used to contact websites that are
+    displaying news content in HTML, but aren't providing RSS files of their
+    own. RSS files are typically used to track the content on frequently
+    changing news websites and to provide a way for other programs to figure
+    out if new news have arrived.
 
-COPYRIGHT AND LICENCE
+    To create a new RSS generator, call "new()":
 
-Put the correct copyright and licence information here.
+        use XML::RSS::FromHTML::Simple;
 
-Copyright (C) 2004 by Mike
+        my $f = XML::RSS::FromHTML::Simple->new({
+            url      => "http://perlmeister.com/art_eng.html",
+            rss_file => $outfile,
+        });
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.2 or,
-at your option, any later version of Perl 5 you may have available.
+    "url" is the URL to a site whichs content you'd like to track.
+    "rss_file" is the name of the resulting RSS file, it defaults to
+    "out.xml".
 
+    Instead of reeling in a document via HTTP, you can just as well use a
+    local file:
+
+        my $f = XML::RSS::FromHTML::Simple->new({
+            html_file => "art_eng.html",
+            base_url  => "http://perlmeister.com",
+            rss_file  => "perlnews.xml",
+        });
+
+    Note that in this case, a "base_url" is necessary to allow the generator
+    to put fully qualified URLs into the RSS file later.
+
+    "XML::RSS::FromHTML::Simple" creates accessor functions for all of its
+    attributes. Therefore, you could just as well create a boilerplate
+    object and set its properties afterwards:
+
+        my $f = XML::RSS::FromHTML::Simple->new();
+        $f->html_file("art_eng.html");
+        $f->base_url("http://perlmeister.com");
+        $f->rss_file("perlnews.xml");
+
+    Typically, not all links embedded in the HTML document should be copied
+    to the resulting RSS file. The "link_filter()" attribute takes a
+    subroutine reference, which decides on each URL whether to process it or
+    ignore it:
+
+        $f->link_filter( sub {
+            my($url, $text) = @_;
+
+            if($url =~ m#linux-magazine\.com/#) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+    The "link_filter" subroutine gets called with each URL and its link
+    text, as found in the HTML content. If "link_filter" returns 1, the link
+    will be added to the RSS file. If "link_filter" returns 0, the link will
+    be ignored.
+
+    In addition to decide if the Link is RSS-worthy, the filter may also
+    change the value of the URL or the corresponding text by modifying $_[0]
+    or $_[1] directly.
+
+    To start the RSS generator, run
+
+        $f->make_rss() or die $f->error();
+
+    which will generate the RSS file. If anything goes wrong, "make_rss()"
+    returns false and the "error()" method will tell why it failed.
+
+    This module has been inspired by Sean Burke's article in TPJ 11/2002.
+    I've discussed its code in the following 02/2005 issue of Linux
+    Magazine:
+
+        http://www.linux-magazine.com/issue/51/Perl_Collecting_News_Headlines.pdf
+
+    There's also XML::RSS::FromHTML on CPAN, which looks like it's offering
+    a more powerful API. The focus of XML::RSS::FromHTML::Simple, on the
+    other hand, is simplicity.
+
+LEGALESE
+    This program is free software, you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+AUTHOR
+    2007, Mike Schilli <m@perlmeister.com>
 

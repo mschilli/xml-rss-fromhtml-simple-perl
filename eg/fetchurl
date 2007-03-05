@@ -4,7 +4,6 @@ use strict;
 
 use Log::Log4perl qw(:easy);
 use File::Temp qw(tempfile);
-use XML::Simple;
 
  Log::Log4perl->easy_init($DEBUG);
 
@@ -24,4 +23,4 @@ $f->link_filter( sub {
     }
 });
 
-$f->make_rss();
+$f->make_rss() or die $f->error();
