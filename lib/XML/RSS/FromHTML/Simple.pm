@@ -308,6 +308,65 @@ To start the RSS generator, run
 which will generate the RSS file. If anything goes wrong, C<make_rss()>
 returns false and the C<error()> method will tell why it failed.
 
+=head2 UTF-8 Woes
+
+C<XML::RSS::FromHTML::Simple> has been designed to handle UTF-8
+encoded web pages well, but there are a few gotchas you should be
+aware of.
+
+If the C<LWP::UserAgent> used by C<XML::RSS::FromHTML::Simple> detects
+that a web page is utf-8-encoded, it will return its content
+in utf-8 encoded strings via the C<decoded_content()> method.
+
+This means that if you filter on this content, you need to use
+utf-8 strings for comparisons as well and C<use utf8> if
+you specify them literally.
+Also make sure that your regexes
+handle non-ascii characters which might occur in those strings. 
+Simon Cozen's "Advanced Perl
+Programming" has an excellent chapter on how to tackle some of 
+these problems correctly.
+
+Secondly,
+the current version of LWP has an issue with pages that have 
+UTF-8-encoded data in the I<HEAD> section. It will print a warning
+like
+
+   Parsing of undecoded UTF-8 will give garbage when decoding entities
+   at .../LWP/Protocol.pm line 114.
+
+which can be worked around by setting
+
+    my $ua = LWP::UserAgent->new(parse_head => 0);
+
+and providing this resilient user agent to the C<XML::RSS::FromHTML::Simple>
+constructor:
+
+    my $f = XML::RSS::FromHTML::Simple->new({
+        url      => "...",
+        rss_file => "...",
+	ua       => $ua,
+    });
+
+Details on this problem are available at
+
+    http://www.nntp.perl.org/group/perl.libwww/2006/08/msg6801.html
+
+on the libwww mailing list.
+
+=head2 DEBUGGING
+
+C<XML::RSS::FromHTML::Simple> is C<Log::Log4perl>-enabled, to figure
+out what's going on under the hood, simply call
+
+    use Log::Log4perl qw(:easy);
+    Log::Log4perl->easy_init($DEBUG);
+
+before using C<XML::RSS::FromHTML::Simple>. For details on Log4perl,
+check the http://log4perl.sourceforge.net website.
+
+=head2 HISTORY
+
 This module has been inspired by Sean Burke's article in TPJ 11/2002.
 I've discussed its code in the 02/2005 issue of Linux Magazine:
 
