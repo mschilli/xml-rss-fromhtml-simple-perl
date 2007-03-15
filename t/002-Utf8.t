@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use warnings;
 use strict;
+use utf8;
 use Encode qw(is_utf8 _utf8_on);
 use File::Spec::Functions qw(rel2abs);
 use Test::More qw(no_plan);
