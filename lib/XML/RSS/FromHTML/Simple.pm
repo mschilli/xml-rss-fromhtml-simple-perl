@@ -319,8 +319,7 @@ that a web page is utf-8-encoded, it will return its content
 in utf-8 encoded strings via the C<decoded_content()> method.
 
 This means that if you filter on this content, you need to use
-utf-8 strings for comparisons as well and C<use utf8> if
-you specify them literally.
+utf-8 strings for comparisons.
 Also make sure that your regexes
 handle non-ascii characters which might occur in those strings. 
 Simon Cozen's "Advanced Perl
