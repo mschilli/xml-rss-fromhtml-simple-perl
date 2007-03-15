@@ -348,11 +348,18 @@ constructor:
 	ua       => $ua,
     });
 
+Note that this relies on the web server sending a header like
+
+    Content-Type: text/html; charset=utf-8' 
+
+or the resulting string won't have the utf-8 bit set.
+
 Details on this problem are available at
 
+    http://www.nntp.perl.org/group/perl.libwww/2007/02/msg6965.html
     http://www.nntp.perl.org/group/perl.libwww/2006/08/msg6801.html
 
-on the libwww mailing list.
+in the libwww mailing list archive.
 
 =head2 DEBUGGING
 

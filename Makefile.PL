@@ -1,4 +1,3 @@
-use 5.008002;
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
@@ -6,7 +5,7 @@ WriteMakefile(
     NAME              => 'XML::RSS::FromHTML::Simple',
     VERSION_FROM      => 'lib/XML/RSS/FromHTML/Simple.pm',
     PREREQ_PM         => {
-        LWP::UserAgent => 0,
+        LWP::UserAgent => 2.033,
         HTTP::Request::Common => 0,
         XML::RSS => 1.05,
         HTML::Entities => 0,
