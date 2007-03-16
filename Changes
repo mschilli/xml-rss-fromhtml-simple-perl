@@ -1,6 +1,7 @@
 Revision history for Perl extension XML::RSS::Maker.
 
-0.01  Sat Jan 17 08:22:43 2004
-	- original version; created by h2xs 1.23 with options
-		-AXn XML::RSS::Maker
+0.02 03/15/2007
+    (ms) Fixed utf8 issues
 
+0.01 03/01/2007
+    (ms) Where it all began

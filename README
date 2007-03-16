@@ -1,5 +1,5 @@
 ######################################################################
-    XML::RSS::FromHTML::Simple 0.01
+    XML::RSS::FromHTML::Simple 0.02
 ######################################################################
 
 NAME
@@ -107,6 +107,67 @@ DESCRIPTION
     which will generate the RSS file. If anything goes wrong, "make_rss()"
     returns false and the "error()" method will tell why it failed.
 
+  UTF-8 Woes
+    "XML::RSS::FromHTML::Simple" has been designed to handle UTF-8 encoded
+    web pages well, but there are a few gotchas you should be aware of.
+
+    If the "LWP::UserAgent" used by "XML::RSS::FromHTML::Simple" detects
+    that a web page is utf-8-encoded, it will return its content in utf-8
+    encoded strings via the "decoded_content()" method.
+
+    This means that if you filter on this content, you need to use utf-8
+    strings for comparisons, and if you specify strings or regexes literally
+    in your code in utf-8, you'll have to make sure that the "use utf8"
+    pragma is set (unless, by the time you're reading this, we have the year
+    2038 and all source code gets written in utf8 by default).
+
+    Also make sure that your regexes handle non-ascii characters which might
+    occur in those strings. Simon Cozen's "Advanced Perl Programming" has an
+    excellent chapter on how to tackle some of these problems correctly.
+
+    Secondly, the current version of LWP has an issue with pages that have
+    UTF-8-encoded data in the *HEAD* section. It will print a warning like
+
+       Parsing of undecoded UTF-8 will give garbage when decoding entities
+       at .../LWP/Protocol.pm line 114.
+
+    which can be worked around by setting
+
+        my $ua = LWP::UserAgent->new(parse_head => 0);
+
+    and providing this resilient user agent to the
+    "XML::RSS::FromHTML::Simple" constructor:
+
+        my $f = XML::RSS::FromHTML::Simple->new({
+            url      => "...",
+            rss_file => "...",
+            ua       => $ua,
+        });
+
+    Note that this relies on the web server sending a header like
+
+        Content-Type: text/html; charset=utf-8' 
+
+    or the resulting string won't have the utf-8 bit set.
+
+    Details on this problem are available at
+
+        http://www.nntp.perl.org/group/perl.libwww/2007/02/msg6965.html
+        http://www.nntp.perl.org/group/perl.libwww/2006/08/msg6801.html
+
+    in the libwww mailing list archive.
+
+  DEBUGGING
+    "XML::RSS::FromHTML::Simple" is "Log::Log4perl"-enabled, to figure out
+    what's going on under the hood, simply call
+
+        use Log::Log4perl qw(:easy);
+        Log::Log4perl->easy_init($DEBUG);
+
+    before using "XML::RSS::FromHTML::Simple". For details on Log4perl,
+    check the http://log4perl.sourceforge.net website.
+
+  HISTORY
     This module has been inspired by Sean Burke's article in TPJ 11/2002.
     I've discussed its code in the 02/2005 issue of Linux Magazine:
 
