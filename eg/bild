@@ -5,7 +5,7 @@ use strict;
 use Log::Log4perl qw(:easy);
 use File::Temp qw(tempfile);
 
-# Log::Log4perl->easy_init($DEBUG);
+Log::Log4perl->easy_init($DEBUG);
 
 use XML::RSS::FromHTML::Simple;
 

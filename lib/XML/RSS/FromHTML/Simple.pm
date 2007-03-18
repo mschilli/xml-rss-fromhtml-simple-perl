@@ -10,12 +10,13 @@ use URI::URL ();
 use HTTP::Date;
 use DateTime;
 use HTML::TreeBuilder;
-use Log::Log4perl qw(:easy);
+use Log::Log4perl qw(:easy get_logger);
 use Data::Dumper;
-use Encode qw(is_utf8);
+use Data::Hexdumper;
+use Encode qw(is_utf8 _utf8_off);
 use base qw(Class::Accessor);
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 __PACKAGE__->mk_accessors($_) for qw(url html_file rss_file encoding 
                                      link_filter
@@ -43,6 +44,9 @@ sub make_rss {
           return undef;
       }
 
+      if(get_logger()->is_debug()) {
+          DEBUG byte_hexdump( "Result: " . $resp->decoded_content() );
+      }
       $self->html( $resp->decoded_content() );
 
       DEBUG "HTML is ",
@@ -103,6 +107,10 @@ sub make_rss {
 
     if($self->link_filter()->($lurl, $text)) {
       INFO "Adding rss entry: $text $lurl";
+      if(get_logger()->is_debug()) {
+          DEBUG byte_hexdump("TEXT=" . $text);
+          DEBUG byte_hexdump("URL=" . $lurl);
+      }
       $rss->add_item(
         title => $text,
         link  => $lurl,
@@ -192,6 +200,22 @@ EOT
     if(! defined *{"$package\::$name"}) {
         eval $code or die "$@";
     }
+}
+
+###########################################
+sub byte_hexdump {
+###########################################
+    my($string) = @_;
+
+    my $flag = "UTF8 OFF";
+
+    if(is_utf8($string)) {
+        $flag = "UTF8 ON";
+    }
+
+    _utf8_off($string);
+
+    return "$flag ", hexdump(data => $string);
 }
 
 1;

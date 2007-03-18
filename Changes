@@ -1,5 +1,10 @@
 Revision history for Perl extension XML::RSS::Maker.
 
+0.03 03/17/2007
+    (ms) Added Hexdumper to debug utf8 problems.
+    (ms) Using XML::Parser as preferred parser to avoid 
+         test problems.
+
 0.02 03/15/2007
     (ms) Fixed utf8 issues
 

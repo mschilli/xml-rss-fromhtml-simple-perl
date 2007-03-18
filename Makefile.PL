@@ -5,7 +5,7 @@ WriteMakefile(
     NAME              => 'XML::RSS::FromHTML::Simple',
     VERSION_FROM      => 'lib/XML/RSS/FromHTML/Simple.pm',
     PREREQ_PM         => {
-        LWP::UserAgent => 2.033,
+        LWP => 5.805,
         HTTP::Request::Common => 0,
         XML::RSS => 1.22,
         HTML::Entities => 0,
@@ -20,6 +20,7 @@ WriteMakefile(
         Encode      => 0,
         File::Temp => 0,
         Test::More => 0,
+        Data::Hexdumper => 0,
     }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/XML/RSS/FromHTML/Simple.pm',
