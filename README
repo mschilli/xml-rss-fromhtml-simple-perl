@@ -110,7 +110,7 @@ DESCRIPTION
     change the value of the URL, the corresponding link text or any other
     RSS fields. The third argument passed to "link_filter" by the processor
     is the processor object itself, which offers a "rss_attrs()" method to
-    set additional values:
+    set additional values or modify the link text or the link itself:
 
         $f->link_filter( sub {
             my($url, $text, $processor) = @_;
