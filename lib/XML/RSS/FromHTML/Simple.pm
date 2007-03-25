@@ -339,7 +339,8 @@ In addition to decide if the Link is RSS-worthy,
 the filter may also change the value of the URL, the corresponding
 link text or any other RSS fields. The third argument passed to 
 C<link_filter> by the processor is the processor object itself,
-which offers a C<rss_attrs()> method to set additional values:
+which offers a C<rss_attrs()> method to set additional values
+or modify the link text or the link itself:
 
     $f->link_filter( sub {
         my($url, $text, $processor) = @_;
