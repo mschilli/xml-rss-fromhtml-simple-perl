@@ -231,6 +231,7 @@ XML::RSS::FromHTML::Simple - Create RSS feeds for sites that don't offer them
     use XML::RSS::FromHTML::Simple;
 
     my $proc = XML::RSS::FromHTML::Simple->new({
+        title    => "My new cool RSS feed",
         url      => "http://perlmeister.com/art_eng.html",
         rss_file => "new_articles.xml",
     });
