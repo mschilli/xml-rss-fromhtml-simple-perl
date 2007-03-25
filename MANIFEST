@@ -10,4 +10,3 @@ t/001-Basic.t
 t/002-Utf8.t
 t/data/art_eng.html
 t/data/utf8.html
-XML-RSS-FromHTML-Simple-0.03.tar.gz
