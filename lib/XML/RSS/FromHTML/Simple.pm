@@ -20,7 +20,9 @@ our $VERSION = "0.03";
 
 __PACKAGE__->mk_accessors($_) for qw(url html_file rss_file encoding 
                                      link_filter
-                                     html title base_url ua error);
+                                     html title base_url ua error
+                                     rss_attrs
+                                    );
 
 ###########################################
 sub make_rss {
@@ -97,15 +99,17 @@ sub make_rss {
     dc    => { date => $isotime . "Z"},
   );
 
-  $self->url( $self->base_url() ) unless $self->url();
+  $self->base_url( $self->url() ) unless $self->base_url();
 
-  foreach(exlinks($self->html(), $self->url())) {
+  foreach(exlinks($self->html(), $self->base_url())) {
 
     my($lurl, $text) = @$_;
       
     $text = decode_entities($text);
 
-    if($self->link_filter()->($lurl, $text)) {
+    $self->rss_attrs({});
+
+    if($self->link_filter()->($lurl, $text, $self)) {
       INFO "Adding rss entry: $text $lurl";
       if(get_logger()->is_debug()) {
           DEBUG byte_hexdump("TEXT=" . $text);
@@ -114,6 +118,7 @@ sub make_rss {
       $rss->add_item(
         title => $text,
         link  => $lurl,
+        %{ $self->rss_attrs() },
       );
     }
   }
@@ -323,17 +328,33 @@ as found in the HTML content. If C<link_filter> returns 1, the link will
 be added to the RSS file. If C<link_filter> returns 0, the link will
 be ignored.
 
-In addition to decide if the Link is RSS-worthy,
-the filter may also change the value of 
-the URL or the corresponding text by modifying C<$_[0]> or C<$_[1]>
-directly.
-
 To start the RSS generator, run
 
     $f->make_rss() or die $f->error();
 
 which will generate the RSS file. If anything goes wrong, C<make_rss()>
 returns false and the C<error()> method will tell why it failed.
+
+In addition to decide if the Link is RSS-worthy,
+the filter may also change the value of the URL, the corresponding
+link text or any other RSS fields. The third argument passed to 
+C<link_filter> by the processor is the processor object itself,
+which offers a C<rss_attrs()> method to set additional values:
+
+    $f->link_filter( sub {
+        my($url, $text, $processor) = @_;
+
+        if($url =~ m#linux-magazine\.com/#) {
+            $processor->rss_attrs({ 
+                description => "This is cool stuff",
+                link        => 'http://link.here.instead.com',
+                title       => 'New Link Text',
+            });
+            return 1;
+        } else {
+            return 0;
+        }
+    });
 
 =head2 UTF-8 Woes
 

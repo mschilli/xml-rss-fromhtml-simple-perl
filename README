@@ -10,6 +10,7 @@ SYNOPSIS
         use XML::RSS::FromHTML::Simple;
 
         my $proc = XML::RSS::FromHTML::Simple->new({
+            title    => "My new cool RSS feed",
             url      => "http://perlmeister.com/art_eng.html",
             rss_file => "new_articles.xml",
         });
@@ -47,12 +48,14 @@ DESCRIPTION
         use XML::RSS::FromHTML::Simple;
 
         my $f = XML::RSS::FromHTML::Simple->new({
+            title    => "My new cool RSS",
             url      => "http://perlmeister.com/art_eng.html",
             rss_file => $outfile,
         });
 
-    "url" is the URL to a site whichs content you'd like to track.
-    "rss_file" is the name of the resulting RSS file, it defaults to
+    "url" is the URL to a site whichs content you'd like to track. "title"
+    is an optional feed title which will show up later in the newly created
+    RSS. "rss_file" is the name of the resulting RSS file, it defaults to
     "out.xml".
 
     Instead of reeling in a document via HTTP, you can just as well use a
@@ -96,16 +99,33 @@ DESCRIPTION
     will be added to the RSS file. If "link_filter" returns 0, the link will
     be ignored.
 
-    In addition to decide if the Link is RSS-worthy, the filter may also
-    change the value of the URL or the corresponding text by modifying $_[0]
-    or $_[1] directly.
-
     To start the RSS generator, run
 
         $f->make_rss() or die $f->error();
 
     which will generate the RSS file. If anything goes wrong, "make_rss()"
     returns false and the "error()" method will tell why it failed.
+
+    In addition to decide if the Link is RSS-worthy, the filter may also
+    change the value of the URL, the corresponding link text or any other
+    RSS fields. The third argument passed to "link_filter" by the processor
+    is the processor object itself, which offers a "rss_attrs()" method to
+    set additional values:
+
+        $f->link_filter( sub {
+            my($url, $text, $processor) = @_;
+
+            if($url =~ m#linux-magazine\.com/#) {
+                $processor->rss_attrs({ 
+                    description => "This is cool stuff",
+                    link        => 'http://link.here.instead.com',
+                    title       => 'New Link Text',
+                });
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
   UTF-8 Woes
     "XML::RSS::FromHTML::Simple" has been designed to handle UTF-8 encoded

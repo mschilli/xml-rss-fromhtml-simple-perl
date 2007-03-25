@@ -49,5 +49,32 @@ my %urls = map { $_->{link} => 1 }
 ok(!exists $urls{'http://www.perl.com/pub/a/2002/09/11/log4perl.html'},
    "Non linux-magazine url doesn't exist");
 
+# Try rss_attrs
+
+$f->link_filter( sub {
+    my($url, $text, $processor) = @_;
+
+#print "Found $url $text\n";
+
+    if($url =~ m#issue/51#) {
+        $processor->rss_attrs({
+            description => 'This is cool stuff',
+            title       => 'Where it all began',
+        });
+        return 1;
+    } else {
+        return 0;
+    }
+});
+
+$f->make_rss();
+
+  # Read XML file back in
+$data = XMLin($outfile);
+
+is($data->{item}->{title}, 'Where it all began', "Modified title");
+is($data->{item}->{description}, 'This is cool stuff', "Modified desc");
+is($data->{item}->{link}, 'http://www.linux-magazine.com/issue/51/Perl_Collecting_News_Headlines.pdf', "url check");
+
 #use Data::Dumper;
-# print STDERR Dumper($data);
+#print Dumper($data);
