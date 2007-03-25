@@ -271,13 +271,15 @@ To create a new RSS generator, call C<new()>:
     use XML::RSS::FromHTML::Simple;
 
     my $f = XML::RSS::FromHTML::Simple->new({
+        title    => "My new cool RSS",
         url      => "http://perlmeister.com/art_eng.html",
         rss_file => $outfile,
     });
 
 C<url> is the URL to a site whichs content you'd like to track. 
-C<rss_file> is the name of the resulting RSS file, it defaults
-to C<out.xml>. 
+C<title> is an optional feed title which will show up later in the
+newly created RSS. C<rss_file> is the name of the resulting RSS file,
+it defaults to C<out.xml>.
 
 Instead of reeling in a document via HTTP, you can just as well
 use a local file:
@@ -373,7 +375,7 @@ constructor:
     my $f = XML::RSS::FromHTML::Simple->new({
         url      => "...",
         rss_file => "...",
-	ua       => $ua,
+        ua       => $ua,
     });
 
 Note that this relies on the web server sending a header like
