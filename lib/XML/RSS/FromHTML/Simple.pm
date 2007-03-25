@@ -16,7 +16,7 @@ use Data::Hexdumper;
 use Encode qw(is_utf8 _utf8_off);
 use base qw(Class::Accessor);
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 __PACKAGE__->mk_accessors($_) for qw(url html_file rss_file encoding 
                                      link_filter
