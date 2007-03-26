@@ -258,7 +258,7 @@ XML::RSS::FromHTML::Simple - Create RSS feeds for sites that don't offer them
 
 =head1 ABSTRACT
 
-This module helps creating RSS feeds for sites that don't them.
+This module helps creating RSS feeds for sites that don't have them.
 It examines HTML documents, extracts their links and puts them and
 their textual descriptions into an RSS file.
 
@@ -266,7 +266,7 @@ their textual descriptions into an RSS file.
 
 C<XML::RSS::FromHTML::Simple> helps reeling in web pages and 
 creating RSS files from them.
-Typically, it is used to contact websites that are displaying news 
+Typically, it is used with websites that are displaying news 
 content in HTML, but aren't providing RSS files of their own.
 RSS files are typically used to track the content on frequently 
 changing news websites and to provide a way for other programs to figure
