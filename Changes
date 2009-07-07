@@ -1,5 +1,8 @@
 Revision history for Perl extension XML::RSS::Maker.
 
+0.05 (not yet released) 07/07/2009
+    (ms) Doc fixes
+
 0.04 03/25/2007
     (ms) Added the processor object to the argument list for the 
          link filter and added the <rss_attrs()> method to specify 
