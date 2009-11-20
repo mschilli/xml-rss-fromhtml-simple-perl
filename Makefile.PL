@@ -1,6 +1,14 @@
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
+
+my $meta_merge = {
+    META_MERGE => {
+        resources => {
+            repository  => 'http://github.com/mschilli/xml-rss-fromhtml-simple-perl',
+        },
+    }
+};
 WriteMakefile(
     NAME              => 'XML::RSS::FromHTML::Simple',
     VERSION_FROM      => 'lib/XML/RSS/FromHTML/Simple.pm',
@@ -22,10 +30,7 @@ WriteMakefile(
         Test::More => 0,
         Data::Hexdumper => 0,
     }, # e.g., Module::Name => 1.1
-    META_MERGE          => {
-    resources       => {
-       repository  => 'http://github.com/mschilli/xml-rss-fromhtml-simple-perl',
-    },
+    $ExtUtils::MakeMaker::VERSION >= 6.50 ? (%$meta_merge) : (),
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/XML/RSS/FromHTML/Simple.pm',
        AUTHOR         => 'Mike <m@perlmeister.com>') : ()),

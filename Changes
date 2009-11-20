@@ -1,7 +1,8 @@
 Revision history for Perl extension XML::RSS::Maker.
 
-0.05 (not yet released) 07/07/2009
+0.05 11/19/2009
     (ms) Doc fixes
+    (ms) Added github repository link to Makefile.PL
 
 0.04 03/25/2007
     (ms) Added the processor object to the argument list for the 
